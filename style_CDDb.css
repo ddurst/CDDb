@@ -1,0 +1,556 @@
+html {
+  box-sizing: border-box; 
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/*Color variables*/
+:root{ 
+  --cddbRed: #af1a17;
+  --cddbGreen: #10a020;
+  --cddbBlue: #2d58a8;
+  --cddbBlack: #0e0e0e;
+  --cddbWhite: white;
+  --cddbGrey: #939393;
+}
+
+	  
+
+
+/* 	  Up here, put all of your general styles that are not dependent on a flexible grid, such as fonts 
+styles, background colors, etc. This is where your "mobile first" approach comes in. This stuff will be 
+"global" on both mobile and desktop */
+
+
+
+/* Your containers need to have shape. Declaring "display: block;" makes the div appear as such, 
+and "clear both" forces other divs off of the same row. This is directly related to floats. 
+More on this important tip later */
+
+/*Global and "mobile first" meaning what this looks like on an iphone will be default and any other 
+cases need to be specified else where*/
+
+    .container{
+      border 8px solid var(--cddbWhite);
+      padding-right:15px;
+      padding-left:15px;
+      margin-right:auto;
+      margin-left:auto;
+    }
+    .container1{
+	    display: block;
+	    clear: both;
+    }
+    .container2{
+    }
+    .container3{
+    }
+    .header {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      display: block;
+      clear: both;
+      width: 100%;
+      height: 100px;
+      background-image: url("./Images/cropped-cropped-Arguatlas-Root-Header_wide.png");
+      background-position: center top;
+      background-color: var(--cddbBlack);
+      background-repeat: no-repeat;
+      background-size: cover;
+      border-color: var(--cddbBlack);
+      padding: 20px;
+      border: 0px;
+      margin: 0;
+    }
+    .sectionTitle {
+      width: 100%;
+      height: 100%;
+      background-color: yellow;
+      background-repeat: no-repeat;
+      background-size: cover;
+      border-color: solid pink;
+      padding: 0px;
+      border: 0px solid pink;
+      margin: 0;
+    }
+    .argument {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      border-color: var(--cddbBlack);
+      overflow: hidden;
+      padding-bottom: 1rem;
+      padding-top: 0rem;
+      border: 8px solid var(--cddbBlack);
+      margin: 0;
+      width: 100%;
+    }
+    .because {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      border-color: var(--cddbBlue);
+      overflow: auto;
+      padding-bottom: 1rem;
+      padding-top: 0rem;
+      border: 8px solid var(--cddbBlue);
+      margin: 0;
+    }
+   .because a:hover{
+          color: var(--cddbWhite);
+          background-color: var(--cddbBlue);
+      }  
+    .so {
+      float: left;
+      width: 100%;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      border-color: var(--cddbGreen);
+      overflow: auto;
+      padding-bottom: 1rem;
+      padding-top: 0rem;
+      border: 8px solid var(--cddbGreen);
+      margin: 0;
+    }
+   .so a:hover{
+      color: var(--cddbWhite);
+      background-color: var(--cddbGreen);
+    }  
+    .rebuttal {
+      float: right;
+      width: 100%;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      border-color: var(--cddbRed);
+      overflow: auto;
+      padding-bottom: 1rem;
+      padding-top: 0rem;
+      border: 8px solid var(--cddbRed);
+      margin: 0;
+    }
+   .rebuttal a:hover{
+      color: var(--cddbWhite);
+      background-color: var(--cddbRed);
+    }  
+    .tags {
+      float: right;
+      width: 100%;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      border-color: var(--cddbBlack);
+      overflow: auto;
+      padding-bottom: 1rem;
+      padding-top: 0rem;
+      border: 8px solid var(--cddbBlack);
+      margin: 0; 
+    }
+    .button{
+      float: left;
+      margin:0;
+      height: 2rem;
+      font-size: 75%;
+      font-weight: bold;
+      text-align: center;
+      vertical-align: center;
+      border-width: .2rem;
+      border-style: solid;
+      border-radius: 2rem;
+    }
+    .circle{
+      float: left;
+      margin:0;
+      font-weight: bold;
+      text-align: center;
+      border-width: 0;
+      border-style: solid;
+      border-radius: 50%;
+      letter-spacing: -6px; /*This is to get the small numbers closer to the big ones*/
+    }
+    .btn-group button {
+      cursor: pointer; /* Pointer/hand icon */
+      float: left; /* Float the buttons side by side */
+    }
+    .btn-group button:not(:last-child) {
+        border-right: none; /* Prevent double borders */
+    }
+    /* Clear floats (clearfix hack) */
+    .btn-group:after {
+        clear: both;
+        display: table;
+    }
+    .acAvail{
+      color: var(--cddbWhite);
+      background-color: var(--cddbGrey);
+      border-color: var(--cddbWhite);
+      border-right-width: .1rem;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .acAvail:hover {
+      background-color: var(--cddbGreen);
+    }
+    .acSet{
+      color: var(--cddbWhite);
+      background-color: var(--cddbGreen);
+      border-color: var(--cddbWhite);
+      border-right-width: .1rem;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .reAvail{
+      color: var(--cddbWhite);
+      background-color: var(--cddbGrey);
+      border-color: var(--cddbWhite);
+      border-left-width: .1rem;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;      
+    } 
+    .reAvail:hover {
+      background-color: var(--cddbRed);
+    }
+    .reSet{
+      color: var(--cddbWhite);
+      background-color: var(--cddbRed);
+      border-color: var(--cddbWhite);
+      border-left-width: .1rem;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;         
+    }
+    .weighBecause{
+      color: var(--cddbWhite);
+      background-color: var(--cddbBlue);
+      border-color: var(--cddbWhite);
+      border-radius: 0;
+    }
+    .weighBecause:hover {
+      background-color: var(--cddbWhite);
+      color: var(--cddbBlue);
+    }
+    .weighSo{
+      color: var(--cddbWhite);
+      background-color: var(--cddbGreen);
+      border-color: var(--cddbWhite);
+      border-radius: 0;
+    }
+    .weighSo:hover {
+      background-color: var(--cddbWhite);
+      color: var(--cddbGreen);
+    }
+    .weighRebuttal{
+      color: var(--cddbWhite);
+      background-color: var(--cddbRed);
+      border-color: var(--cddbWhite);
+      border-radius: 0;
+    }
+    .weighRebuttal:hover {
+      background-color: var(--cddbWhite);
+      color: var(--cddbRed);
+    }
+    .alter{
+      color: var(--cddbBlack);
+      background-color: var(--cddbWhite);
+      border-color: var(--cddbBlack);
+      width:80%;
+      height:20%;
+    }
+    .alter:hover {
+      background-color: var(--cddbBlack);
+      color: var(--cddbWhite);
+    }
+    .reCircle{
+      color: var(--cddbWhite);
+      background-color: var(--cddbRed);
+      border-color: var(--cddbRed);
+    }
+    .beCircle{
+      color: var(--cddbWhite);
+      background-color: var(--cddbBlue);
+      border-color: var(--cddbBlue);
+    }
+    .soCircle{
+      color: var(--cddbWhite);
+      background-color: var(--cddbGreen);
+      border-color: var(--cddbGreen);
+    }
+    .form-signin {
+      display: block;
+      max-width: 330px;
+      padding: 15px;
+      margin: 0 auto;
+    }
+    .form-signin .form-signin-heading,
+    .form-signin .checkbox {
+      margin-bottom: 10px;
+    }
+    .form-signin .checkbox {
+      font-weight: normal;
+    }
+    .form-signin .form-control {
+      position: relative;
+      height: auto;
+      -webkit-box-sizing: border-box;
+         -moz-box-sizing: border-box;
+              box-sizing: border-box;
+      padding: 10px;
+      font-size: 16px;
+    }
+    .form-signin .form-control:focus {
+      z-index: 2;
+    }
+    .form-signin input[type="email"] {
+      color:red;
+      margin-bottom: -1px;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    .form-signin input[type="password"] {
+      margin-bottom: 10px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    }
+    .input-group{
+      position:relative;
+      display:table;
+      border-collapse:separate;
+    }
+    .btn{
+      display:inline-block;
+      padding:6px 12px;
+      margin-bottom:0;
+      font-size:14px;
+      font-weight:400;
+      line-height:1.42857143;
+      text-align:center;
+      white-space:nowrap;
+      vertical-align:middle;
+
+      -ms-touch-action:manipulation;
+      touch-action:manipulation;
+      cursor:pointer;
+      /*forked most this code from bootstrap as a template but not a terribly good template. 
+      This seems to be giving me trouble.
+      -webkit-user-select:none;
+      -moz-user-select:none;
+      -ms-user-select:none;
+      */user-select:none;/*
+      */
+      background-image:none;
+      border:1px solid transparent;
+      border-radius:4px;
+    }
+    .btn-group-lg>.btn,.btn-lg{
+      padding:10px 16px;
+      font-size:18px;
+      line-height:1.3333333;
+      border-radius:6px;
+    }
+    .btn-primary{
+      color:#fff;
+      background-color:#337ab7;
+      border-color:#2e6da4;
+    }
+    .btn-primary.focus,.btn-primary:focus{
+      color:#fff;
+      background-color:#286090;
+      border-color:#122b40;
+    }
+    .btn-primary:hover{
+      color:#fff;
+      background-color:#286090;
+      border-color:#204d74;
+    }
+    .btn-primary.active,.btn-primary:active,.open>.dropdown-toggle.btn-primary{
+      color:#fff;
+      background-color:#286090;
+      border-color:#204d74;
+    }
+    .btn-primary.active.focus,.btn-primary.active:focus,.btn-primary.active:hover,.btn-primary:active.focus,.btn-primary:active:focus,.btn-primary:active:hover,.open>.dropdown-toggle.btn-primary.focus,.open>.dropdown-toggle.btn-primary:focus,.open>.dropdown-toggle.btn-primary:hover{
+      color:#fff;
+      background-color:#204d74;
+      border-color:#122b40;
+    }
+    .btn-primary.active,.btn-primary:active,.open>.dropdown-toggle.btn-primary{
+      background-image:none;
+    }
+    .btn-primary.disabled.focus,.btn-primary.disabled:focus,.btn-primary.disabled:hover,.btn-primary[disabled].focus,.btn-primary[disabled]:focus,.btn-primary[disabled]:hover,fieldset[disabled] .btn-primary.focus,fieldset[disabled] .btn-primary:focus,fieldset[disabled] .btn-primary:hover{
+      background-color:#337ab7;
+      border-color:#2e6da4;
+    }
+    .btn-primary .badge{
+      color:#337ab7;
+      background-color:#fff;
+    }
+    .btn-block{
+      display:block;
+      width:100%;
+      border-width:1rem;
+      border-color:solid red;
+    }
+    .btn-block+.btn-block{
+      margin-top:5px;
+    }
+    input[type=button].btn-block,input[type=reset].btn-block,input[type=submit].btn-block{
+      width:100%;
+
+    }
+    h1 {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 2em;
+      font-style: normal;
+      font-variant: normal;
+      font-weight: 500;
+      line-height: 26.4px;
+    }
+    h2 {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 1.5em;
+      font-style: normal;
+      font-variant: normal;
+      font-weight: 500;
+      line-height: 15.4px;
+    }
+    p {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 1em;
+      font-style: normal;
+      font-variant: normal;
+      font-weight: 400;
+      line-height: 20px;
+    }
+    a:link{
+          color: inherit;
+          text-decoration: none;
+      }
+    a:visited {
+          color: inherit;
+          text-decoration: none;
+      }
+    a:hover{
+          color: inherit;
+      }  
+    a:active {
+          color: inherit;
+      }  }
+    #footer {
+      font-size: .5em;
+    }
+
+/* This following code block is called a "Media Query" and this is how responsive web stuff works. You can add 
+more media queries as needed, but most websites can be done with a block of mobile styles like above, and then 
+a conditional media query for tablet and another for desktop. In most cases, you'd have all of your mobile styles 
+"which apply from 0px, up to 768px", then you'd add a media query like below to cover styles from 768 to around 
+1000px, and then another one to declare "1000px and above*/
+
+
+/* A way of describing this media query is, "styles here will only be applied when a minimum screen width of 768px 
+and above". Here is where your CSS "layout overrides" go. Below, I have modified some of your border colors to turn  
+red when the screen width is at least 768px */
+
+    @media only screen and (min-width: 768px) {
+	body, html{
+		height: 100%;
+		margin: 0px;
+	}
+	body{
+		border: 0px #848487
+	}
+	.header{
+		float: right;
+		width: 30%;
+		height: 100%;
+/* 		height: 175px; */
+		background-size: contain;
+		background-position: center center;
+    position:relative;
+	}
+  /*<div class="sectionTitle">Because...</br></div>*/
+  .sectionTitle{
+    float: left;
+    width: 70%;
+    height: 100%;
+  }
+	.because{
+		float: left;
+		width: 70%;
+		height: 100%;
+	}
+    .argument {
+		border-color: var(--cddbBlack);
+		width: 70%;
+		display: inline-block;
+/* 		height: 220px; */
+		height: 100%;
+	}
+	.rebuttal{
+    border-color: var(--cddbRed);
+		width: 30%;
+		height: 100%;
+	}
+  .because {
+		border-color: var(--cddbBlue);
+		height: 100%;
+	}
+  .so {
+		border-color: var(--cddbGreen);
+		width: 70%;
+		display: inline-block;
+		height: 100%;
+	}
+	.tags{
+		width: 30%;
+		height: 100%;
+	}
+	.container2{
+		clear: both;
+	}
+	.row-1{
+		height: 25%;
+	}
+	.container1{
+		height: 50%;
+	}
+	.container2{
+		height: 25%;		
+	}
+    .argRow1{
+      display: block;
+      height: 5rem;
+      /*border: 2pxrem solid red;*/
+    }   
+    .argRow2{
+      display: block;
+      clear: both;
+      height: 10rem;
+    }  
+    .argContain1{
+      display: inline-block;
+      float: left;
+      width: 15%;
+      height: 100%;
+      font-weight: bolder;
+      letter-spacing: -6px; /*This is to get the small numbers closer to the big ones*/
+    }
+    .argContain2{
+      display: inline-block;
+      float: right;
+      width: 85%;
+      height: 100%;
+      font-size: 1.5rem;
+    }
+    .argContain3{
+      display: inline-block;
+      float: left;
+      width: 80%;
+      height: 100%;
+    }
+    .argContain4{
+      display: inline-block;
+      float: right;
+      position: relative;
+      width: 20%;
+      height: 100%;
+    }
+}
+    
+/*     You learn about displaying inline or block and how to mess with float in codacademy Boundaries and 
+Space lesson 9. Display: Flex */
