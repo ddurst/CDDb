@@ -20,9 +20,190 @@
                         your phone browser. This fixes it. -->
   <link rel="stylesheet" href="style_CDDb.css">
   <script src="jquery-3.3.1.min.js"></script>
+  <style>
+    :root{ 
+      --cddbRed: #af1a17;
+      --cddbGreen: #10a020;
+      --cddbBlue: #2d58a8;
+      --cddbBlack: #0e0e0e;
+      --cddbWhite: white;
+      --cddbGrey: #939393;
+    }
+    #buttonTest8 { 
+      float: left;
+      margin: 0;
+      font-weight: bold;
+      text-align: center;
+      border-width: 0;
+      border-style: solid;
+      border-radius: 50%;
+      letter-spacing: -6px;
+      background-color: var(--cddbGrey); 
+      border-color: var(--cddbGrey);  
+      width: 1rem; 
+      height: 1rem;             
+    }
+    #buttonTest5 { 
+      float: left;
+      margin: 0;
+      font-weight: bold;
+      text-align: center;
+      border-width: 0;
+      border-style: solid;
+      border-radius: 50%;
+      letter-spacing: -6px;
+      background-color: var(--cddbGrey); 
+      border-color: var(--cddbGrey);  
+      width: 1rem; 
+      height: 1rem;             
+    }
+    #buttonTest11 { 
+      float: left;
+      margin: 0;
+      font-weight: bold;
+      text-align: center;
+      border-width: 0;
+      border-style: solid;
+      border-radius: 50%;
+      letter-spacing: -6px;
+      background-color: var(--cddbGrey); 
+      border-color: var(--cddbGrey);  
+      width: 1rem; 
+      height: 1rem;             
+    }
+  </style>
 </head>
                       <!-- End Header -->
 <body>
+
+<!-- Deal with overlays here -->
+<div id="overlay">
+  <!-- TODO I clearly can't figure out how to properly adjust the height of this overlay window -->
+  <div id="overContain">
+    <div id="overWeighBecause">
+      <section 
+        style=" 
+          font-size: 120%;
+          color: white;
+          background-color:var(--cddbBlue);
+          padding-left: .5rem;   
+          padding-bottom: .5rem;    
+        ">
+          <strong>[Current Argument] is true because...</strong>
+      </section>
+      <section 
+        style="padding-left: .5rem; overflow:auto;">
+        <?php
+          $endorseType = 'Because';
+          $baseURL = "http://localhost:8888/CDDb_working.php";
+          include('weigh_associated.php');
+        ?>
+      </section>
+      <section 
+        style=" 
+          font-size: 120%;
+          color: white;
+          background-color:var(--cddbBlue);
+          padding-left: .5rem;   
+          padding-bottom: .5rem;    
+        ">
+          <table border='0' width='100%'><tr>
+            <td style="width:20%;"></td>
+            <td style="width:25%; min-width:100px;">
+              <button onclick="off()" class="button weighBecause" name="buttonClicked" value="weighBecause"><strong>Cancel</strong></button> 
+            </td>
+            <td style="width:10%; min-width:100px;">
+              <button onclick="clearData()" class="button weighBecause" name="buttonClicked" value="weighBecause"><strong>&#x27F2;</strong></button> 
+            </td>
+            <td style="width:25%; min-width:100px; align: left;">
+              <button onclick="on()" class="button weighBecause" name="buttonClicked" value="weighBecause"><strong>Submit</strong></button> 
+            </td>
+            <td style="width:20%;"></td>
+          </tr>
+      </table>
+      </section>
+      <!-- Testing out javascript buttons -->
+      
+        <table border = '0'>
+          <tr>
+            <td><div style="height: 100%; width: 100%; display:flex; justify-content:center; align-items: center;">
+              <button id="buttonTest8" onclick="clickTheButton(8)"></button>
+            </div></td> 
+            <td>Item 1 - In my little list of stuff</td>
+          </tr>
+          <tr>
+            <td><div style="height: 100%;width: 100%; display:flex; justify-content:center; align-items: center;">
+              <button id="buttonTest5" onclick="clickTheButton(5)"></button>
+            </div></td> 
+            <td>Item 2 - In my little list of stuff</td>
+          </tr>
+          <tr>
+            <td><div style="height: 100%; width: 100%; display:flex; justify-content:center; align-items: center;">
+              <button id="buttonTest11" onclick="clickTheButton(11)"></button>
+            </div></td> 
+            <td>Item 3 - In my little list of stuff</td>
+          </tr>
+        </table>
+      <!-- End of javascript buttons test -->
+    </div>
+  </div>  
+</div>
+<script>
+var totalClicks = 0;
+var clickArr = [];
+
+function on() {
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("overContain").style.display = "flex";
+    document.getElementById("overWeighBecause").style.display = "block";
+}
+
+function off() {
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("overContain").style.display = "none";
+    document.getElementById("overWeighBecause").style.display = "none";
+}
+
+function clearData() {
+  for (var i = 0; i < clickArr.length; i++) {
+    document.getElementById("buttonTest"+clickArr[i][0]).style.backgroundColor = "var(--cddbGrey)"; 
+    document.getElementById("buttonTest"+clickArr[i][0]).style.width = "1rem"; 
+    document.getElementById("buttonTest"+clickArr[i][0]).style.height = "1rem";   
+  }
+  clickArr.length = 0;
+  totalClicks = 0;
+}
+
+function clickTheButton(argID) {
+  totalClicks++;
+  var found = false;
+  var iterator = 0;
+  var foundIndex;
+  var clickRatio;
+  var clickRatioStyle;
+  while (found == false && iterator < clickArr.length) {
+    if(clickArr[iterator][0] == argID){
+      found = true;
+      clickArr[iterator][1]++;
+      foundIndex = iterator;
+    }
+    iterator++;
+  }
+  if (found == false) {
+    foundIndex = clickArr.length;
+    clickArr.push([argID,1]);  
+    document.getElementById("buttonTest"+argID).style.backgroundColor = "var(--cddbBlue)";
+  }
+  for (var i = 0; i < clickArr.length; i++) {
+    clickRatio = .7+(((clickArr[i][1])/totalClicks)*5);
+    clickRatioSyle = clickRatio + "rem";
+    document.getElementById("buttonTest"+clickArr[i][0]).style.width = clickRatioSyle; 
+    document.getElementById("buttonTest"+clickArr[i][0]).style.height = clickRatioSyle;  
+  }
+}
+
+</script>
+
 <div class="row-1">
   <div class="header">
     <section 
@@ -50,9 +231,7 @@
       <strong>Because...</strong>
     </td><td style="width:10%; min-width:100px;">
         <?php if($_SESSION['opinion'] > 0){ ?> 
-            <form action='functions.php' method="POST">
-              <button type="submit" class="button weighBecause" name="buttonClicked" value="weighBecause">Weigh In</button> 
-            </form>
+            <button onclick="on()" class="button weighBecause" name="buttonClicked" value="weighBecause">Weigh In</button> 
     <?php } ?>
     </td></tr>
     </table>
@@ -177,7 +356,7 @@
         <?php 
           if(isset($link)) {
             echo "<a href=" . $link . ">
-              <div style=\"margin: 1rem; padding: 1rem; height: 80%; border-radius: 10px; border: 3px solid #939393;\">Panda<br>
+              <div style=\"margin: 1rem; padding: 1rem; height: 80%; border-radius: 10px; border: 3px solid #939393;\">".$link."<br>
               </div>
             </a>";
           }
