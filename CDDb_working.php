@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Collective Dialectic Database</title>
+  <title>The Collective Dialectic Database</title>
   <meta charset="utf-8"/>
   <meta name="keywords" content="arguments, dialectic, formalize, anti-troll, discussion, debate, non-social network, anti-social network"/>
   <meta name="copyright" content="Copyright 2015 Craig Danz Seattle, WA USA">  
