@@ -1,4 +1,3 @@
-
 <?php 
   session_start(); 
   $currentArgID = intval($_GET["arg"]); 
@@ -29,45 +28,34 @@
       --cddbWhite: white;
       --cddbGrey: #939393;
     }
-    #buttonTest8 { 
+    .overlayButtons {
       float: left;
       margin: 0;
+      color: var(--cddbWhite);
       font-weight: bold;
       text-align: center;
       border-width: 0;
       border-style: solid;
       border-radius: 50%;
-      letter-spacing: -6px;
+    }
+    #buttonTest8 { 
       background-color: var(--cddbGrey); 
       border-color: var(--cddbGrey);  
+      font-size: 1rem;
       width: 1rem; 
       height: 1rem;             
     }
     #buttonTest5 { 
-      float: left;
-      margin: 0;
-      font-weight: bold;
-      text-align: center;
-      border-width: 0;
-      border-style: solid;
-      border-radius: 50%;
-      letter-spacing: -6px;
       background-color: var(--cddbGrey); 
-      border-color: var(--cddbGrey);  
+      border-color: var(--cddbGrey); 
+      font-size: 1rem; 
       width: 1rem; 
       height: 1rem;             
     }
     #buttonTest11 { 
-      float: left;
-      margin: 0;
-      font-weight: bold;
-      text-align: center;
-      border-width: 0;
-      border-style: solid;
-      border-radius: 50%;
-      letter-spacing: -6px;
       background-color: var(--cddbGrey); 
       border-color: var(--cddbGrey);  
+      font-size: 1rem;
       width: 1rem; 
       height: 1rem;             
     }
@@ -122,24 +110,52 @@
           </tr>
       </table>
       </section>
-      <!-- Testing out javascript buttons -->
+      <!-- Testing out javascript buttons 
+
+
+    $leftSize = 2.5*($row[0]/100);
+    $rightSize = 1*$row[0]/100;
+    if($row[0]<$tooSmall) $rateAsString = ""; //If the number is too small you can't read it.
+    else $rateAsString = strval(number_format($row[0],1));
+    if ($row[0]< 10) $leftOfDec = substr($rateAsString,0,1);
+    else if($row[0] < 100) $leftOfDec = substr($rateAsString,0,2);
+    else $leftOfDec = substr($rateAsString,0,3);
+    //if ($row[0] < 10) $rightOfDec = substr($rateAsString,2,1); this is trying to cram too much in.
+    //else if($row[0] < 100) $rightOfDec = substr($rateAsString,3,1);
+    //else $rightOfDec = substr($rateAsString,4,1);
+    echo "<tr>\n";  
+      /*With echos, if you wish to use double quotes in HTML you must use single quote echos like so:
+      echo '<input type="text">';
+    Or you can escape them like so:
+      echo "<input type=\"text\">";*/
+    echo "<td><div style=\"height: 100%; width: 100%; display:flex; justify-content:center; align-items: center;\"><button type=\"submit\" class=\"circle ".$styleColor."\" name=\"buttonClicked\" value=\"".$styleColor."\" 
+           style=\"width: ".$diameter."rem; height: ".$diameter."rem;\">
+           <span style=\"font-size: ".$leftSize."rem; letter-spacing: 0px;\">$leftOfDec</span>";
+    if($row[0]>=$tooSmall) echo "<span style=\"font-size: ".$rightSize."rem; letter-spacing: 0px;\">%</span>"; //Only add the percent sign if there is a number before it. 
+
+
+
+
+
+
+    -->
       
         <table border = '0'>
           <tr>
             <td><div style="height: 100%; width: 100%; display:flex; justify-content:center; align-items: center;">
-              <button id="buttonTest8" onclick="clickTheButton(8)"></button>
+              <button class="overlayButtons" id="buttonTest8" onclick="clickTheButton(8)"></button>
             </div></td> 
             <td>Item 1 - In my little list of stuff</td>
           </tr>
           <tr>
             <td><div style="height: 100%;width: 100%; display:flex; justify-content:center; align-items: center;">
-              <button id="buttonTest5" onclick="clickTheButton(5)"></button>
+              <button class="overlayButtons" id="buttonTest5" onclick="clickTheButton(5)"></button>
             </div></td> 
             <td>Item 2 - In my little list of stuff</td>
           </tr>
           <tr>
             <td><div style="height: 100%; width: 100%; display:flex; justify-content:center; align-items: center;">
-              <button id="buttonTest11" onclick="clickTheButton(11)"></button>
+              <button class="overlayButtons" id="buttonTest11" onclick="clickTheButton(11)"></button>
             </div></td> 
             <td>Item 3 - In my little list of stuff</td>
           </tr>
@@ -151,29 +167,35 @@
 <script>
 var totalClicks = 0;
 var clickArr = [];
-
+var testArr = [25,30,45];
 function on() {
-    document.getElementById("overlay").style.display = "block";
-    document.getElementById("overContain").style.display = "flex";
-    document.getElementById("overWeighBecause").style.display = "block";
+  document.getElementById("overlay").style.display = "block";
+  document.getElementById("overContain").style.display = "flex";
+  document.getElementById("overWeighBecause").style.display = "block";
 }
-
 function off() {
-    document.getElementById("overlay").style.display = "none";
-    document.getElementById("overContain").style.display = "none";
-    document.getElementById("overWeighBecause").style.display = "none";
-}
-
-function clearData() {
+  document.getElementById("overlay").style.display = "none";
+  document.getElementById("overContain").style.display = "none";
+  document.getElementById("overWeighBecause").style.display = "none";
   for (var i = 0; i < clickArr.length; i++) {
     document.getElementById("buttonTest"+clickArr[i][0]).style.backgroundColor = "var(--cddbGrey)"; 
     document.getElementById("buttonTest"+clickArr[i][0]).style.width = "1rem"; 
-    document.getElementById("buttonTest"+clickArr[i][0]).style.height = "1rem";   
+    document.getElementById("buttonTest"+clickArr[i][0]).style.height = "1rem";
+    document.getElementById("buttonTest"+clickArr[i][0]).innerHTML = "";   
   }
   clickArr.length = 0;
   totalClicks = 0;
 }
-
+function clearData() {
+  for (var i = 0; i < clickArr.length; i++) {
+    document.getElementById("buttonTest"+clickArr[i][0]).style.backgroundColor = "var(--cddbGrey)"; 
+    document.getElementById("buttonTest"+clickArr[i][0]).style.width = "1rem"; 
+    document.getElementById("buttonTest"+clickArr[i][0]).style.height = "1rem";  
+    document.getElementById("buttonTest"+clickArr[i][0]).innerHTML = "";  
+  }
+  clickArr.length = 0;
+  totalClicks = 0;
+}
 function clickTheButton(argID) {
   totalClicks++;
   var found = false;
@@ -197,11 +219,18 @@ function clickTheButton(argID) {
   for (var i = 0; i < clickArr.length; i++) {
     clickRatio = .7+(((clickArr[i][1])/totalClicks)*5);
     clickRatioSyle = clickRatio + "rem";
+    clickRatioType = 2.5*(clickArr[i][1]/totalClicks);
+    clickRatioSyleType = clickRatioType + "rem";
+    percentCode = "<span style='font-size:"+clickArr[i][1]/totalClicks+"rem'>%</span>";
     document.getElementById("buttonTest"+clickArr[i][0]).style.width = clickRatioSyle; 
-    document.getElementById("buttonTest"+clickArr[i][0]).style.height = clickRatioSyle;  
+    document.getElementById("buttonTest"+clickArr[i][0]).style.height = clickRatioSyle; 
+    document.getElementById("buttonTest"+clickArr[i][0]).style.fontSize = clickRatioSyleType; 
+    if(((clickArr[i][1]/totalClicks)*100)>=20)
+      document.getElementById("buttonTest"+clickArr[i][0]).innerHTML = Math.floor((clickArr[i][1]/totalClicks)*100) + percentCode; 
+    else
+      document.getElementById("buttonTest"+clickArr[i][0]).innerHTML = ""; 
   }
 }
-
 </script>
 
 <div class="row-1">
