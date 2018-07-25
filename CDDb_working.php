@@ -1,7 +1,7 @@
 <?php 
   session_start(); 
   $currentArgID = intval($_GET["arg"]); 
-  $_SESSION['returnToArg']= $currentArgID; /*TODO This session variable won't pass for some reason*/
+  $_SESSION['returnToArg']= $currentArgID;
   require_once('argument_at_hand.php');
 ?>
 
@@ -19,46 +19,11 @@
                         your phone browser. This fixes it. -->
   <link rel="stylesheet" href="style_CDDb.css">
   <script src="jquery-3.3.1.min.js"></script>
+  <script src="script_CDDb.js"></script>
   <style>
-    :root{ 
-      --cddbRed: #af1a17;
-      --cddbGreen: #10a020;
-      --cddbBlue: #2d58a8;
-      --cddbBlack: #0e0e0e;
-      --cddbWhite: white;
-      --cddbGrey: #939393;
-    }
-    .overlayButtons {
-      float: left;
-      margin: 0;
-      color: var(--cddbWhite);
-      font-weight: bold;
-      text-align: center;
-      border-width: 0;
-      border-style: solid;
-      border-radius: 50%;
-    }
-    #buttonTest8 { 
-      background-color: var(--cddbGrey); 
-      border-color: var(--cddbGrey);  
-      font-size: 1rem;
-      width: 1rem; 
-      height: 1rem;             
-    }
-    #buttonTest5 { 
-      background-color: var(--cddbGrey); 
-      border-color: var(--cddbGrey); 
-      font-size: 1rem; 
-      width: 1rem; 
-      height: 1rem;             
-    }
-    #buttonTest11 { 
-      background-color: var(--cddbGrey); 
-      border-color: var(--cddbGrey);  
-      font-size: 1rem;
-      width: 1rem; 
-      height: 1rem;             
-    }
+    <?php
+      include('weigh_associated_styles.php');
+    ?>
   </style>
 </head>
                       <!-- End Header -->
@@ -68,173 +33,119 @@
 <div id="overlay">
   <!-- TODO I clearly can't figure out how to properly adjust the height of this overlay window -->
   <div id="overContain">
+    <!-- Because overlay -->
     <div id="overWeighBecause">
-      <section 
-        style=" 
-          font-size: 120%;
-          color: white;
-          background-color:var(--cddbBlue);
-          padding-left: .5rem;   
-          padding-bottom: .5rem;    
-        ">
-          <strong>[Current Argument] is true because...</strong>
+      <section class="weighHeader" style=" background-color:var(--cddbBlue);">
+          <strong>"<?php echo $phrasing; ?>" Is correct because...</strong>
       </section>
-      <section 
-        style="padding-left: .5rem; overflow:auto;">
+      <section class="weighContent">
         <?php
           $endorseType = 'Because';
           $baseURL = "http://localhost:8888/CDDb_working.php";
           include('weigh_associated.php');
         ?>
+      </br>
+ 
+        <form action="new_assertion.php" method="POST">
+          Not Listed <input style="display: inline-block; width: 80%;" type="text" name="assertion" placeholder="If no similar arguments exist to support position, add your own...">
+          <input style="display: inline-block;" type="submit" value="Add">
+        </form>
+
       </section>
-      <section 
-        style=" 
-          font-size: 120%;
-          color: white;
-          background-color:var(--cddbBlue);
-          padding-left: .5rem;   
-          padding-bottom: .5rem;    
-        ">
-          <table border='0' width='100%'><tr>
-            <td style="width:20%;"></td>
-            <td style="width:25%; min-width:100px;">
-              <button onclick="off()" class="button weighBecause" name="buttonClicked" value="weighBecause"><strong>Cancel</strong></button> 
-            </td>
-            <td style="width:10%; min-width:100px;">
-              <button onclick="clearData()" class="button weighBecause" name="buttonClicked" value="weighBecause"><strong>&#x27F2;</strong></button> 
-            </td>
-            <td style="width:25%; min-width:100px; align: left;">
-              <button onclick="on()" class="button weighBecause" name="buttonClicked" value="weighBecause"><strong>Submit</strong></button> 
-            </td>
-            <td style="width:20%;"></td>
-          </tr>
-      </table>
+      <section class="weighFooter" style="background-color:var(--cddbBlue);">
+        <button onclick="becauseOff()" class="button weighBecause" name="buttonClicked" value="weighBecause"><strong>Cancel</strong></button> 
+
+        <button onclick="becauseClearData()" class="button weighBecause" name="buttonClicked" value="weighBecause"><strong>&#x27F2;</strong></button> 
+
+        <form action="functions.php" method="POST">
+          <button type="submit" class="button weighBecause" name="buttonClicked" value="weighBecause"><strong>Submit</strong></button>
+          <!-- This hidden field handles an input array the user populates in "weigh in" overlays -->
+          <input type="hidden" name="weighInWith" id="weighInWith" value="" /> 
+        </form>
       </section>
-      <!-- Testing out javascript buttons 
-
-
-    $leftSize = 2.5*($row[0]/100);
-    $rightSize = 1*$row[0]/100;
-    if($row[0]<$tooSmall) $rateAsString = ""; //If the number is too small you can't read it.
-    else $rateAsString = strval(number_format($row[0],1));
-    if ($row[0]< 10) $leftOfDec = substr($rateAsString,0,1);
-    else if($row[0] < 100) $leftOfDec = substr($rateAsString,0,2);
-    else $leftOfDec = substr($rateAsString,0,3);
-    //if ($row[0] < 10) $rightOfDec = substr($rateAsString,2,1); this is trying to cram too much in.
-    //else if($row[0] < 100) $rightOfDec = substr($rateAsString,3,1);
-    //else $rightOfDec = substr($rateAsString,4,1);
-    echo "<tr>\n";  
-      /*With echos, if you wish to use double quotes in HTML you must use single quote echos like so:
-      echo '<input type="text">';
-    Or you can escape them like so:
-      echo "<input type=\"text\">";*/
-    echo "<td><div style=\"height: 100%; width: 100%; display:flex; justify-content:center; align-items: center;\"><button type=\"submit\" class=\"circle ".$styleColor."\" name=\"buttonClicked\" value=\"".$styleColor."\" 
-           style=\"width: ".$diameter."rem; height: ".$diameter."rem;\">
-           <span style=\"font-size: ".$leftSize."rem; letter-spacing: 0px;\">$leftOfDec</span>";
-    if($row[0]>=$tooSmall) echo "<span style=\"font-size: ".$rightSize."rem; letter-spacing: 0px;\">%</span>"; //Only add the percent sign if there is a number before it. 
-
-
-
-
-
-
-    -->
-      
-        <table border = '0'>
-          <tr>
-            <td><div style="height: 100%; width: 100%; display:flex; justify-content:center; align-items: center;">
-              <button class="overlayButtons" id="buttonTest8" onclick="clickTheButton(8)"></button>
-            </div></td> 
-            <td>Item 1 - In my little list of stuff</td>
-          </tr>
-          <tr>
-            <td><div style="height: 100%;width: 100%; display:flex; justify-content:center; align-items: center;">
-              <button class="overlayButtons" id="buttonTest5" onclick="clickTheButton(5)"></button>
-            </div></td> 
-            <td>Item 2 - In my little list of stuff</td>
-          </tr>
-          <tr>
-            <td><div style="height: 100%; width: 100%; display:flex; justify-content:center; align-items: center;">
-              <button class="overlayButtons" id="buttonTest11" onclick="clickTheButton(11)"></button>
-            </div></td> 
-            <td>Item 3 - In my little list of stuff</td>
-          </tr>
-        </table>
-      <!-- End of javascript buttons test -->
     </div>
+    <!-- Therefore overlay -->
+    <div id="overWeighTherefore">
+      <section class="weighHeader" style="background-color:var(--cddbGreen);">
+          <strong>"<?php echo $phrasing; ?>" Is correct therefore...</strong>
+      </section>
+      <section class="weighContent">
+        <?php
+          $endorseType = 'Therefore';
+          $baseURL = "http://localhost:8888/CDDb_working.php";
+          include('weigh_associated.php');
+        ?>
+      </section>
+      <section class="weighFooter" style="background-color:var(--cddbGreen);">
+        <button onclick="thereforeOff()" class="button weighTherefore" name="buttonClicked" value="weighTherefore"><strong>Cancel</strong></button> 
+
+        <button onclick="thereforeClearData()" class="button weighTherefore" name="buttonClicked" value="weighTherefore"><strong>&#x27F2;</strong></button> 
+
+        <form action="functions.php" method="POST">
+          <button type="submit" class="button weighTherefore" name="buttonClicked" value="weighTherefore"><strong>Submit</strong></button>
+          <!-- This hidden field handles an input array the user populates in "weigh in" overlays -->
+          <input type="hidden" name="weighInWith" id="weighInWith" value="" /> 
+        </form>
+      </section>
+    </div>
+    <!-- Rebuttal overlay -->
+    <div id="overWeighRebuttal">
+      <section class="weighHeader" style="background-color:var(--cddbRed);">
+          <strong>"<?php echo $phrasing; ?>" Is wrong because...</strong>
+      </section>
+      <section class="weighContent">
+        <?php
+          $endorseType = 'Rebuttal';
+          $baseURL = "http://localhost:8888/CDDb_working.php";
+          include('weigh_associated.php');
+        ?>
+      </section>
+      <section class="weighFooter" style="background-color:var(--cddbRed);">
+        <button onclick="rebuttalOff()" class="button weighRebuttal" name="buttonClicked" value="weighRebuttal"><strong>Cancel</strong></button> 
+        
+        <button onclick="rebuttalClearData()" class="button weighRebuttal" name="buttonClicked" value="weighRebuttal"><strong>&#x27F2;</strong></button> 
+      
+        <form action="functions.php" method="POST">
+          <button type="submit" class="button weighRebuttal" name="buttonClicked" value="weighRebuttal"><strong>Submit</strong></button>
+          <!-- This hidden field handles an input array the user populates in "weigh in" overlays -->
+          <input type="hidden" name="weighInWith" id="weighInWith" value="" /> 
+        </form>
+      </section>
+    </div>
+    <!-- New Assertion overlay -->
+    <div id="overAssertion">
+      <section class="weighHeader" style="background-color:var(--cddbGrey);">
+          <strong>Its important to err toward convergence, any of these close enough?</strong>
+      </section>
+      <section class="weighContent">
+        <?php
+          $endorseType = 'Because'; //TODO Endorse type needs to change depending on where it was triggered
+          //include('new_assertion.php');
+        ?>
+      </section>
+      <section class="weighFooter" style="background-color:var(--cddbGrey);">
+
+        <form action="functions.php" method="POST">
+          <button type="submit" class="button weighRebuttal" name="buttonClicked" value="weighRebuttal"><strong>Submit</strong></button>
+          <!-- This hidden field handles an input array the user populates in "weigh in" overlays -->
+          <input type="hidden" name="weighInWith" id="weighInWith" value="" /> 
+        </form>
+
+      </section>
+    </div>
+    <!-- End of overlays -->
   </div>  
 </div>
-<script>
-var totalClicks = 0;
-var clickArr = [];
-var testArr = [25,30,45];
-function on() {
-  document.getElementById("overlay").style.display = "block";
-  document.getElementById("overContain").style.display = "flex";
-  document.getElementById("overWeighBecause").style.display = "block";
-}
-function off() {
-  document.getElementById("overlay").style.display = "none";
-  document.getElementById("overContain").style.display = "none";
-  document.getElementById("overWeighBecause").style.display = "none";
-  for (var i = 0; i < clickArr.length; i++) {
-    document.getElementById("buttonTest"+clickArr[i][0]).style.backgroundColor = "var(--cddbGrey)"; 
-    document.getElementById("buttonTest"+clickArr[i][0]).style.width = "1rem"; 
-    document.getElementById("buttonTest"+clickArr[i][0]).style.height = "1rem";
-    document.getElementById("buttonTest"+clickArr[i][0]).innerHTML = "";   
-  }
-  clickArr.length = 0;
-  totalClicks = 0;
-}
-function clearData() {
-  for (var i = 0; i < clickArr.length; i++) {
-    document.getElementById("buttonTest"+clickArr[i][0]).style.backgroundColor = "var(--cddbGrey)"; 
-    document.getElementById("buttonTest"+clickArr[i][0]).style.width = "1rem"; 
-    document.getElementById("buttonTest"+clickArr[i][0]).style.height = "1rem";  
-    document.getElementById("buttonTest"+clickArr[i][0]).innerHTML = "";  
-  }
-  clickArr.length = 0;
-  totalClicks = 0;
-}
-function clickTheButton(argID) {
-  totalClicks++;
-  var found = false;
-  var iterator = 0;
-  var foundIndex;
-  var clickRatio;
-  var clickRatioStyle;
-  while (found == false && iterator < clickArr.length) {
-    if(clickArr[iterator][0] == argID){
-      found = true;
-      clickArr[iterator][1]++;
-      foundIndex = iterator;
-    }
-    iterator++;
-  }
-  if (found == false) {
-    foundIndex = clickArr.length;
-    clickArr.push([argID,1]);  
-    document.getElementById("buttonTest"+argID).style.backgroundColor = "var(--cddbBlue)";
-  }
-  for (var i = 0; i < clickArr.length; i++) {
-    clickRatio = .7+(((clickArr[i][1])/totalClicks)*5);
-    clickRatioSyle = clickRatio + "rem";
-    clickRatioType = 2.5*(clickArr[i][1]/totalClicks);
-    clickRatioSyleType = clickRatioType + "rem";
-    percentCode = "<span style='font-size:"+clickArr[i][1]/totalClicks+"rem'>%</span>";
-    document.getElementById("buttonTest"+clickArr[i][0]).style.width = clickRatioSyle; 
-    document.getElementById("buttonTest"+clickArr[i][0]).style.height = clickRatioSyle; 
-    document.getElementById("buttonTest"+clickArr[i][0]).style.fontSize = clickRatioSyleType; 
-    if(((clickArr[i][1]/totalClicks)*100)>=20)
-      document.getElementById("buttonTest"+clickArr[i][0]).innerHTML = Math.floor((clickArr[i][1]/totalClicks)*100) + percentCode; 
-    else
-      document.getElementById("buttonTest"+clickArr[i][0]).innerHTML = ""; 
-  }
-}
-</script>
+
 
 <div class="row-1">
   <div class="header">
+    <section style="
+      color: white;
+      font-size: 15vh;
+    ">
+      <span style="text-shadow: 5px 5px 10px var(--cddbBlue);">C</span><span style="text-shadow: 5px 5px 10px var(--cddbGreen);">D</span><span style="text-shadow: 5px 5px 10px var(--cddbRed);">Db</span>
+    </section>
     <section 
       style=" 
         color: white;
@@ -260,7 +171,7 @@ function clickTheButton(argID) {
       <strong>Because...</strong>
     </td><td style="width:10%; min-width:100px;">
         <?php if($_SESSION['opinion'] > 0){ ?> 
-            <button onclick="on()" class="button weighBecause" name="buttonClicked" value="weighBecause">Weigh In</button> 
+            <button onclick="becauseOn()" class="button weighBecause" name="buttonClicked" value="weighBecause">Weigh In</button> 
     <?php } ?>
     </td></tr>
     </table>
@@ -284,6 +195,7 @@ function clickTheButton(argID) {
   <div class="argument">
     <section 
       style=" 
+
         font-size: 120%;
         color: white;
         background-color:var(--cddbBlack);
@@ -427,11 +339,9 @@ function clickTheButton(argID) {
      <table border='0' width='100%'><tr><td>
       <strong>Rebuttal</strong>
     </td><td style="width:10%; min-width:100px;">
-        <?php if($_SESSION['opinion'] < 0){ ?> 
-            <form action='functions.php' method="POST">
-              <button type="submit" class="button weighRebuttal" name="buttonClicked" value="weighRebuttal">Weigh In</button> 
-            </form>
-    <?php } ?>
+      <?php if($_SESSION['opinion'] < 0){ ?> 
+        <button onclick="rebuttalOn()" class="button weighRebuttal" name="buttonClicked" value="weighRebuttal">Weigh In</button> 
+      <?php } ?>
     </td></tr>
     </table>
     </section>
@@ -465,11 +375,9 @@ function clickTheButton(argID) {
       <table border='0' width='100%'><tr><td>
       <strong>Therefore...</strong>
     </td><td style="width:10%; min-width:100px;">
-        <?php if($_SESSION['opinion'] > 0){ ?> 
-            <form action='functions.php' method="POST">
-              <button type="submit" class="button weighSo" name="buttonClicked" value="weighSo">Weigh In</button> 
-            </form>
-    <?php } ?>
+      <?php if($_SESSION['opinion'] > 0){ ?> 
+        <button onclick="thereforeOn()" class="button weighTherefore" name="buttonClicked" value="weighTherefore">Weigh In</button>  
+      <?php } ?>
     </td></tr>
     </table>
     </section>
