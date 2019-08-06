@@ -1,8 +1,8 @@
 <?php
   session_start();
-  header("Content-Type: text/html; charset=ISO-8859-1");//insure symbols in text are recognized.
-
-  include('connect.php');
+  header("Content-Type: text/html; charset=ISO-8859-1"); //insure symbols in text are recognized.
+  $tooSmall = 20; //The numbers get too small to read at somepoint. What is that point? 
+  include('connect-local-google.php');
   $sql = "SELECT SUM(E.weight) / 
     ( SELECT COUNT(DISTINCT profileID) 
       FROM ENDORSEMENT 
@@ -32,7 +32,7 @@
     //We like the numbers left of the decimal larger than the right so we turn them into two strings
     $leftSize = 2.5*($row[0]/100);
     $rightSize = 1*$row[0]/100;
-    if($row[0]<20) $rateAsString = ""; //If the number is too small you can't read it.
+    if($row[0]<$tooSmall) $rateAsString = ""; //If the number is too small you can't read it.
     else $rateAsString = strval(number_format($row[0],1));
     if ($row[0]< 10) $leftOfDec = substr($rateAsString,0,1);
     else if($row[0] < 100) $leftOfDec = substr($rateAsString,0,2);
@@ -48,7 +48,7 @@
     echo "<td><div style=\"height: 100%; width: 100%; display:flex; justify-content:center; align-items: center;\"><button type=\"submit\" class=\"circle ".$styleColor."\" name=\"buttonClicked\" value=\"".$styleColor."\" 
            style=\"width: ".$diameter."rem; height: ".$diameter."rem;\">
            <span style=\"font-size: ".$leftSize."rem; letter-spacing: 0px;\">$leftOfDec</span>";
-    if($row[0]>=20) echo "<span style=\"font-size: ".$rightSize."rem; letter-spacing: 0px;\">%</span>"; //Only add the percent sign if there is a number before it. 
+    if($row[0]>=$tooSmall) echo "<span style=\"font-size: ".$rightSize."rem; letter-spacing: 0px;\">%</span>"; //Only add the percent sign if there is a number before it. 
     echo "</button></div></td>"; 
     echo "<td>" . "<a href=" . $baseURL . "?arg=" . $row[1] . ">$row[2]</a>" . "</td>\n";
     echo "</tr>\n";

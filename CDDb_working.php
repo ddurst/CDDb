@@ -1,15 +1,14 @@
-
 <?php 
   session_start(); 
   $currentArgID = intval($_GET["arg"]); 
-  $_SESSION['returnToArg']= $currentArgID; /*TODO This session variable won't pass for some reason*/
+  $_SESSION['returnToArg']= $currentArgID;
   require_once('argument_at_hand.php');
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Collective Dialectic Database</title>
+  <title>The Collective Dialectic Database</title>
   <meta charset="utf-8"/>
   <meta name="keywords" content="arguments, dialectic, formalize, anti-troll, discussion, debate, non-social network, anti-social network"/>
   <meta name="copyright" content="Copyright 2015 Craig Danz Seattle, WA USA">  
@@ -20,11 +19,133 @@
                         your phone browser. This fixes it. -->
   <link rel="stylesheet" href="style_CDDb.css">
   <script src="jquery-3.3.1.min.js"></script>
+  <script src="script_CDDb.js"></script>
+  <style>
+    <?php
+      include('weigh_associated_styles.php');
+    ?>
+  </style>
 </head>
                       <!-- End Header -->
 <body>
+
+<!-- Deal with overlays here -->
+<div id="overlay">
+  <!-- TODO I clearly can't figure out how to properly adjust the height of this overlay window -->
+  <div id="overContain">
+    <!-- Because overlay -->
+    <div id="overWeighBecause">
+      <section class="weighHeader" style=" background-color:var(--cddbBlue);">
+          <strong>"<?php echo $phrasing; ?>" Is correct because...</strong>
+      </section>
+      <section class="weighContent">
+        <?php
+          $endorseType = 'Because';
+          $baseURL = "http://localhost:8888/CDDb_working.php";
+          include('weigh_associated.php');
+        ?>
+      </br>
+ 
+        <form action="new_assertion.php" method="POST">
+          Not Listed <input style="display: inline-block; width: 80%;" type="text" name="assertion" placeholder="If no similar arguments exist to support position, add your own...">
+          <input style="display: inline-block;" type="submit" value="Add">
+        </form>
+
+      </section>
+      <section class="weighFooter" style="background-color:var(--cddbBlue);">
+        <button onclick="becauseOff()" class="button weighBecause" name="buttonClicked" value="weighBecause"><strong>Cancel</strong></button> 
+
+        <button onclick="becauseClearData()" class="button weighBecause" name="buttonClicked" value="weighBecause"><strong>&#x27F2;</strong></button> 
+
+        <form action="functions.php" method="POST">
+          <button type="submit" class="button weighBecause" name="buttonClicked" value="weighBecause"><strong>Submit</strong></button>
+          <!-- This hidden field handles an input array the user populates in "weigh in" overlays -->
+          <input type="hidden" name="weighInWith" id="weighInWith" value="" /> 
+        </form>
+      </section>
+    </div>
+    <!-- Therefore overlay -->
+    <div id="overWeighTherefore">
+      <section class="weighHeader" style="background-color:var(--cddbGreen);">
+          <strong>"<?php echo $phrasing; ?>" Is correct therefore...</strong>
+      </section>
+      <section class="weighContent">
+        <?php
+          $endorseType = 'Therefore';
+          $baseURL = 'http://localhost:8888/CDDb_working.php';
+          include('weigh_associated.php');
+        ?>
+      </section>
+      <section class="weighFooter" style="background-color:var(--cddbGreen);">
+        <button onclick="thereforeOff()" class="button weighTherefore" name="buttonClicked" value="weighTherefore"><strong>Cancel</strong></button> 
+
+        <button onclick="thereforeClearData()" class="button weighTherefore" name="buttonClicked" value="weighTherefore"><strong>&#x27F2;</strong></button> 
+
+        <form action="functions.php" method="POST">
+          <button type="submit" class="button weighTherefore" name="buttonClicked" value="weighTherefore"><strong>Submit</strong></button>
+          <!-- This hidden field handles an input array the user populates in "weigh in" overlays -->
+          <input type="hidden" name="weighInWith" id="weighInWith" value="" /> 
+        </form>
+      </section>
+    </div>
+    <!-- Rebuttal overlay -->
+    <div id="overWeighRebuttal">
+      <section class="weighHeader" style="background-color:var(--cddbRed);">
+          <strong>"<?php echo $phrasing; ?>" Is wrong because...</strong>
+      </section>
+      <section class="weighContent">
+        <?php
+          $endorseType = 'Rebuttal';
+          $baseURL = "http://localhost:8888/CDDb_working.php";
+          include('weigh_associated.php');
+        ?>
+      </section>
+      <section class="weighFooter" style="background-color:var(--cddbRed);">
+        <button onclick="rebuttalOff()" class="button weighRebuttal" name="buttonClicked" value="weighRebuttal"><strong>Cancel</strong></button> 
+        
+        <button onclick="rebuttalClearData()" class="button weighRebuttal" name="buttonClicked" value="weighRebuttal"><strong>&#x27F2;</strong></button> 
+      
+        <form action="functions.php" method="POST">
+          <button type="submit" class="button weighRebuttal" name="buttonClicked" value="weighRebuttal"><strong>Submit</strong></button>
+          <!-- This hidden field handles an input array the user populates in "weigh in" overlays -->
+          <input type="hidden" name="weighInWith" id="weighInWith" value="" /> 
+        </form>
+      </section>
+    </div>
+    <!-- New Assertion overlay -->
+    <div id="overAssertion">
+      <section class="weighHeader" style="background-color:var(--cddbGrey);">
+          <strong>Its important to err toward convergence, any of these close enough?</strong>
+      </section>
+      <section class="weighContent">
+        <?php
+          $endorseType = 'Because'; //TODO Endorse type needs to change depending on where it was triggered
+          //include('new_assertion.php');
+        ?>
+      </section>
+      <section class="weighFooter" style="background-color:var(--cddbGrey);">
+
+        <form action="functions.php" method="POST">
+          <button type="submit" class="button weighRebuttal" name="buttonClicked" value="weighRebuttal"><strong>Submit</strong></button>
+          <!-- This hidden field handles an input array the user populates in "weigh in" overlays -->
+          <input type="hidden" name="weighInWith" id="weighInWith" value="" /> 
+        </form>
+
+      </section>
+    </div>
+    <!-- End of overlays -->
+  </div>  
+</div>
+
+
 <div class="row-1">
   <div class="header">
+    <section style="
+      color: white;
+      font-size: 15vh;
+    ">
+      <span style="text-shadow: 5px 5px 10px var(--cddbBlue);">C</span><span style="text-shadow: 5px 5px 10px var(--cddbGreen);">D</span><span style="text-shadow: 5px 5px 10px var(--cddbRed);">Db</span>
+    </section>
     <section 
       style=" 
         color: white;
@@ -50,9 +171,7 @@
       <strong>Because...</strong>
     </td><td style="width:10%; min-width:100px;">
         <?php if($_SESSION['opinion'] > 0){ ?> 
-            <form action='functions.php' method="POST">
-              <button type="submit" class="button weighBecause" name="buttonClicked" value="weighBecause">Weigh In</button> 
-            </form>
+            <button onclick="becauseOn()" class="button weighBecause" name="buttonClicked" value="weighBecause">Weigh In</button> 
     <?php } ?>
     </td></tr>
     </table>
@@ -76,6 +195,7 @@
   <div class="argument">
     <section 
       style=" 
+
         font-size: 120%;
         color: white;
         background-color:var(--cddbBlack);
@@ -177,7 +297,7 @@
         <?php 
           if(isset($link)) {
             echo "<a href=" . $link . ">
-              <div style=\"margin: 1rem; padding: 1rem; height: 80%; border-radius: 10px; border: 3px solid #939393;\">Panda<br>
+              <div style=\"margin: 1rem; padding: 1rem; height: 80%; border-radius: 10px; border: 3px solid #939393;\">".$link."<br>
               </div>
             </a>";
           }
@@ -219,11 +339,9 @@
      <table border='0' width='100%'><tr><td>
       <strong>Rebuttal</strong>
     </td><td style="width:10%; min-width:100px;">
-        <?php if($_SESSION['opinion'] < 0){ ?> 
-            <form action='functions.php' method="POST">
-              <button type="submit" class="button weighRebuttal" name="buttonClicked" value="weighRebuttal">Weigh In</button> 
-            </form>
-    <?php } ?>
+      <?php if($_SESSION['opinion'] < 0){ ?> 
+        <button onclick="rebuttalOn()" class="button weighRebuttal" name="buttonClicked" value="weighRebuttal">Weigh In</button> 
+      <?php } ?>
     </td></tr>
     </table>
     </section>
@@ -257,11 +375,9 @@
       <table border='0' width='100%'><tr><td>
       <strong>Therefore...</strong>
     </td><td style="width:10%; min-width:100px;">
-        <?php if($_SESSION['opinion'] > 0){ ?> 
-            <form action='functions.php' method="POST">
-              <button type="submit" class="button weighSo" name="buttonClicked" value="weighSo">Weigh In</button> 
-            </form>
-    <?php } ?>
+      <?php if($_SESSION['opinion'] > 0){ ?> 
+        <button onclick="thereforeOn()" class="button weighTherefore" name="buttonClicked" value="weighTherefore">Weigh In</button>  
+      <?php } ?>
     </td></tr>
     </table>
     </section>
