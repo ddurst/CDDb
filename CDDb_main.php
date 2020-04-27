@@ -1,10 +1,39 @@
+<!-- 
+  **FILE DESCRIPTION**
+    The front page - html, php, and javascript. All dynamic content is called from this file and this is the file the web will reference. 
+  **NEEDS**
+    If CSS inline it is because I'm not sure how to better handle.
+  **WRITTEN BY**
+    Craig Danz - Seattle, WA - Copyright January 18, 2018
+
+  **SYSTEM DESCRIPTION**
+    A structure for expression measuring while shaping a map of "the dialogue". Reduces noise and contextualizes to enable productive collective decision making.      
+      ** Novel reference material to join dictionaries, encyclopedias and atlases
+      ** Manages competing priorities
+      ** Enable governing bodies
+      ** Public/Private knowledgebase
+      ** Next gen-polling
+      ** Content discovery
+    The Dialogue - defined here as the collective expression of online/media/community chatter as individually percieved AKA "The Discourse", "conventional wisdom", what "Society Tells You to Think" .
+    An organizing principle with an emphasis on context. 
+-->
+
+
+
 <?php 
   session_start(); 
   $_SESSION['currentArg'] = intval($_GET["arg"]); 
   require_once('argument_at_hand.php');
   $baseURL = "http://localhost/CDDB_main.php";
+  $_SESSION['currentBecause'] = $because; 
+  $_SESSION['currentTherefore'] = $therefore; 
+  $_SESSION['currentRebuttal'] = $rebuttal; 
   //print_r($_SESSION);
 ?>
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,10 +46,13 @@
   <meta name="robots" content="follow"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <link rel="stylesheet" href="CDDb_styles.css">
+
+  <script type="text/javascript" src="script_CDDb.js"></script>
   <script type="text/javascript"> //Figure out if I can do this anywhere better. Don't know how to do it directly in script file and is clunky echoing it out in php. 
     var jsBecause = <?php echo json_encode($because); ?>;
+    var jsTherefore = <?php echo json_encode($therefore); ?>;
+    var jsRebuttal = <?php echo json_encode($rebuttal); ?>;
   </script>
-  <script type="text/javascript" src="script_CDDb.js"></script>
   <style>
     <?php
       include('dynamic-styling_CDDb.php');
@@ -29,6 +61,100 @@
 </head>
                       <!-- End Header -->
 <body>
+
+<!-- Overlay used to refine phrasing or explication -->
+<div id="overlay">
+  <!-- TODO I clearly can't figure out how to properly adjust the height of this overlay window -->
+  <div id="overContain">
+    <!-- New Assertion overlay -->
+    <div id="overPhrasing">
+      <div class="box_header neutralColor">
+        <div>Otherwise Put</div>
+        <button onclick="concealPhrasing()" class="button shame" name="buttonClicked" value="altPhrasing">X</button> 
+      </div>
+      <?php
+        if (count($altPhrasings) > 0) { 
+          $lineColorIterator = 0;
+          foreach($altPhrasings as $row) {
+            if ($lineColorIterator % 2  == 0) { 
+              echo "<div class='lineItem'>";
+            }
+            else{
+              echo "<div class='lineItem2'>";
+            }
+            $lineColorIterator++;
+
+            echo "<div>" . $row[0] . "</div>\n";
+            if(isset($_SESSION['profile']) and ($_SESSION['opinion'] > 0)){
+            
+
+              echo "<div class=\"choiceHold\"><div class=\"choice\"><div>
+                <form action=\"login.php?arg=TEST\" method=\"POST\">
+                  <button type=\"submit\" class=\"button phraseQuibble\" name=\"buttonClicked\" value=\"accept\">eh...<span class=\"tooltiptext\">Almost but not quite</span></button> 
+                </form>
+                <form action=\"functions.php\" method=\"POST\">
+                  <button type=\"submit\" class=\"button phrasePrefer\" name=\"buttonClicked\" value=\"putThisForth\">Preferred</button>
+                  <input type=\"hidden\" name=\"putThisForth\" id=\"putThisForth\" value=" . $row[1] . " /> 
+                </form>
+
+
+              </div></div></div>";
+            }
+            echo "</div>";
+          }
+        }
+        else {
+          echo "0 results";
+        }
+      ?>
+
+        <!-- Create a new put forth to use when the one you need is not yet available -->
+
+          <?php if($_SESSION['opinion'] > 0){ ?> 
+            <form action="functions.php" method="POST">
+              <button type="submit" class="button shame" name="buttonClicked" value="newPutForth">Add</button>
+              <input type="text" size="120" name="newPutForth" id="newPutForth" value="" /> 
+            </form>
+          <?php } ?>
+
+    </div>
+    <div id="overExplication">
+      <div class="box_header neutralColor">
+        <div>The argument may be better developed or revealed by the following</div>
+        <button onclick="concealExplication()" class="button shame" name="buttonClicked" value="altExplication">X</button> 
+      </div>
+      <?php
+        if (count($links) > 0) { 
+          foreach($links as $row) {
+            if(strlen($row[5])<1){
+              $row[5] = $row[1]; //If there is no value for the title just set the url as the title
+            }
+            echo "<div class='lineItem'>";
+            echo "<div>" . $row[0] . "</div>\n";
+            echo "<div><a href=\"" . $row[1] . "\"target=\"_blank\">" . $row[5] . "</a></div>\n";
+            if(isset($_SESSION['profile']) and ($_SESSION['opinion'] > 0)){
+              echo "<div>
+              <form action=\"functions.php\" method=\"POST\">
+                        <button type=\"submit\" class=\"button shame\" name=\"buttonClicked\" value=\"promoteExplication\">Chef's Kiss</button>
+                        <input type=\"hidden\" name=\"promoteExplication\" id=\"promoteExplication\" value=\"" . $row[1] . "\" /> 
+                    </form>
+              </div>";
+            }
+            echo "</div>\n<hr />";
+          }
+        }
+
+        else {
+        echo "0 results";
+        }
+      ?>
+    </div>
+  </div>  
+</div>
+<!-- End of overlays -->
+
+
+
   <div class="main_grid">
     <div class="because_cell">
       <div class="box_header becauseColor">
@@ -43,21 +169,14 @@
 
             <button onclick="becauseClearData()" class="button weighBecause" name="buttonClicked" value="weighBecause">&#x27F2;</button> 
 
-            <!-- TESTER Bring back the form below in all its glory when you are ready to run with the big dogs -->
-            <button onclick="testFunction()" class="button weighBecause" name="buttonClicked" value="weighBecause">Weigh In</button> 
-            <!--<form action="functions.php" method="POST">
-              <button onclick="testFunction()" class="button weighBecause" name="buttonClicked" value="weighBecause">Weigh In</button> 
-              <button type="submit" class="button weighBecause" name="buttonClicked" value="weighBecause">Weigh In</button>-->
+            <form action="functions.php" method="POST"> 
+              <button type="submit" class="button weighBecause" name="buttonClicked" value="weighBecause">Weigh In</button>
               <!-- This hidden field has its value updated with an array as a string serving as the "weigh in" input -->
               <input type="hidden" name="becauseWeighInWith" id="becauseWeighInWith" value="" /> 
-            <!--</form>-->
+            </form>
           <?php } ?>
-
-
-
       </div>
       <div class="box_content becauseContent">
-
         <?php
           $endorseType = 'Because';
           include('associated_arguments.php');
@@ -65,12 +184,29 @@
 
           <!-- Create a new argument to use when the one you need is not yet available -->
           <?php if($_SESSION['opinion'] > 0){ ?> 
-            <form action="functions.php" method="POST">
+            <form action="checkNewAssertion.php" method="POST">
               <button type="submit" class="button weighBecause" name="buttonClicked" value="becauseAddAssertion">Add</button>
               <input type="text" size="120" name="becauseAddAssertion" id="becauseAddAssertion" value="" /> 
             </form>
           <?php } ?>
       </div>
+
+
+        <!-- TODO Total Hack Job Here - Needs to be rethought and better solution
+            If zero results then there is no means to add any. That won't do. If the JS array for this type had no results then it is null. Check for null and display the attributes for adding an endorsement. We only need one of the three button weighBecause elements (as of 10.6.2019) so I hard code call the third element in the array of all to change the display to block. Why? cause it is easier for now. But needs a fix. I also display the input field. The whole thing is wrapped in a ph conditional so this only shows up when the appropriate accept/reject condition is chosen along with a logged in user. 
+
+            This "solution" breaks normal flow with how I want to interact with each window individually and if a user switch I want it to revert. I expect bugs with this. 
+         -->
+        <?php if(isset($_SESSION['profile']) and ($_SESSION['opinion'] > 0) and (count($because)==0)){ ?>
+          <script type="text/javascript"> 
+              var actionButtonClassArray = document.getElementsByClassName("button weighBecause");
+              actionButtonClassArray[2].style.display = "block";
+              document.getElementById("becauseAddAssertion").style.display = "block";
+          </script>
+        <?php } ?>
+        <!--End of Hack that I want to fix-->
+
+
       <div class="box_nofoot becauseInvert"></div>
     </div>
     <div class="head_cell">
@@ -154,40 +290,163 @@
 
 
       <div class="box_content primaryInvert">
-        <div class="genContain">Rate: <?php echo "$rate\n";?><br>
-          Based on this many users: <?php echo "$assertions\n";?><br>
-          Phrased: <?php echo "$phrasing\n";?></div>
-        <div class="genContain">
-          Title: <?php echo $links[0][4];?><br>
-          Link: <?php echo $links[0][0];?><br>
-          Publisher: <?php echo $links[0][1];?><br>
-          By first name: <?php echo $links[0][2];?><br>
-          By last name: <?php echo $links[0][3];?><br>
+        <div class="argBox_grid">
+          <div class="stat_subCell">
+            <div class="statBig">
+              <?php 
+                if(strlen($rate)==5){
+                  echo substr($rate,0,3);
+                }
+                else if(strlen($rate)==4){
+                  echo substr($rate,0,2);
+                }
+                else if(strlen($rate)==3){
+                  echo substr($rate,0,1);
+                }
+              ?>
+            </div>
+            <div class="statSmall">
+              <?php 
+                if(strlen($rate)==5){
+                  echo substr($rate,3,2)."%\n";
+                }
+                else if(strlen($rate)==4){
+                  echo substr($rate,2,2)."%\n";
+                }
+                else if(strlen($rate)==3){
+                  echo substr($rate,1,1)."%\n";
+                }
+                else if(strlen($rate)==2){
+                  echo substr($rate,0,1)."%\n";
+                }
+              ?>
+            </div>
+            <div class="statDetail">
+              Based on <?php echo $assertions; if($assertions == 1) echo " user\n"; else echo " users\n";?>
+            </div>
+          </div>
+          <div class="phrased_subCell">
+            <?php echo "$phrasing\n";?>
+          </div>
+          <div class="phraseAltBtn_subCell">
+            <button onclick="revealPhrasing()" class="button phraseAltBtn" name="buttonClicked" value="altPhrasing">&#x270e;</button> 
+          </div>
+          <div class="explication_subCell">
+            <?php 
+              if(strlen($links[0][5])<1){
+                $links[0][5] = $links[0][1]; //If there is no value for the title just set the url as the title
+              }
+            ?>
+            <a href="<?php echo $links[0][1];?>" target="_blank"><?php echo $links[0][5];?></a><br>
+            Publisher: <?php echo $links[0][2];?><br>
+            By first name: <?php echo $links[0][3];?><br>
+            By last name: <?php echo $links[0][4];?><br>
+          </div>
+          <div class="explicationAltBtn_subCell">
+            <button onclick="revealExplication()" class="button explicationAltBtn" name="buttonClicked" value="altExplication">&#x2318;</button> 
+          </div>
         </div>
       </div>
       <div class="box_nofoot primaryInvert"></div>
     </div>
     <div class="rebuttal_cell">
       <div class="box_header rebuttalColor">
-        Rebuttal
-      </div>
-      <div class="box_content rebuttalContent">
-        <div class='lineItem'>
-          <div class='acceptRate'>".$line[1]."</div>
-          <div class='assertLink'><a href=" . $baseURL . "?arg=" . $line[0] . ">" . $line[2] . "</a></div>
-          <div class='bumpButton'><button class='bump' onclick='becauseBump(5)'>XYZ</button></div>
-          <div class='pendingWeight'>{calc}</div>
+        <div>
+          Rebuttal
         </div>
+
+          <!--TODO Ripped from because section, customization for rebuttal in progress-->
+          <?php if($_SESSION['opinion'] < 0){ ?> 
+            <div style="width: 70%;"></div>
+
+            <button onclick="rebuttalClearData()" class="button weighRebuttal" name="buttonClicked" value="weighRebuttal">&#x27F2;</button> 
+
+            <form action="functions.php" method="POST"> 
+              <button type="submit" class="button weighRebuttal" name="buttonClicked" value="weighRebuttal">Weigh In</button>
+              <!-- This hidden field has its value updated with an array as a string serving as the "weigh in" input -->
+              <input type="hidden" name="rebuttalWeighInWith" id="rebuttalWeighInWith" value="" /> 
+            </form>
+          <?php } ?>
+        </div>
+      <div class="box_content rebuttalContent">
+        <!--TODO Ripped from because section, customization for rebuttal in progress-->
+        <?php
+          $endorseType = 'Rebuttal';
+          include('associated_arguments.php');
+        ?>  
+
+          <!-- Create a new argument to use when the one you need is not yet available -->
+          <?php if($_SESSION['opinion'] < 0){ ?> 
+            <form action="checkNewAssertion.php" method="POST">
+              <button type="submit" class="button weighRebuttal" name="buttonClicked" value="rebuttalAddAssertion">Add</button>
+              <input type="text" size="120" name="rebuttalAddAssertion" id="rebuttalAddAssertion" value="" /> 
+            </form>
+          <?php } ?>
       </div>
+
+        <!-- TODO Total Hack Job Here - Needs to be rethought and better solution
+            If zero results then there is no means to add any because the form only appears after a selection is made in yte window. That won't do. If the JS array for this type had no results then it is null. Check for null and display the attributes for adding an endorsement. We only need one of the three button weighBecause elements (as of 10.6.2019) so I hard code call the third element in the array of all to change the display to block. Why? cause it is easier for now. But needs a fix. I also display the input field. The whole thing is wrapped in a ph conditional so this only shows up when the appropriate accept/reject condition is chosen along with a logged in user. 
+
+            This "solution" breaks normal flow with how I want to interact with each window individually and if a user switch I want it to revert. I expect bugs with this. 
+         -->
+        <?php if(isset($_SESSION['profile']) and ($_SESSION['opinion'] < 0) and (count($rebuttal)==0)){ ?>
+          <script type="text/javascript"> 
+              var actionButtonClassArray = document.getElementsByClassName("button weighRebuttal");
+              actionButtonClassArray[2].style.display = "block";
+              document.getElementById("rebuttalAddAssertion").style.display = "block";
+          </script>
+        <?php } ?>
+        <!--End of Hack that I want to fix-->
+
+
       <div class="box_nofoot rebuttalInvert"></div>
     </div>
     <div class="therefore_cell">
       <div class="box_header thereforeColor">
-        Therefore...
-      </div>
+        <div>
+          Therefore...
+        </div>
+          <?php if($_SESSION['opinion'] > 0){ ?> 
+            <div style="width: 70%;"></div>
+
+            <button onclick="thereforeClearData()" class="button weighTherefore" name="buttonClicked" value="weighTherefore">&#x27F2;</button> 
+
+            <form action="functions.php" method="POST"> 
+              <button type="submit" class="button weighTherefore" name="buttonClicked" value="weighTherefore">Weigh In</button>
+              <!-- This hidden field has its value updated with an array as a string serving as the "weigh in" input -->
+              <input type="hidden" name="thereforeWeighInWith" id="thereforeWeighInWith" value="" /> 
+            </form>
+          <?php } ?>
+        </div>
       <div class="box_content thereforeContent">
-        Here is where we list the therefore stuff
+        <?php
+          $endorseType = 'Therefore';
+          include('associated_arguments.php');
+        ?>  
+          <!-- Create a new argument to use when the one you need is not yet available -->
+          <?php if($_SESSION['opinion'] > 0){ ?> 
+            <form action="checkNewAssertion.php" method="POST">
+              <button type="submit" class="button weighTherefore" name="buttonClicked" value="thereforeAddAssertion">Add</button>
+              <input type="text" size="120" name="thereforeAddAssertion" id="thereforeAddAssertion" value="" /> 
+            </form>
+          <?php } ?>
       </div>
+
+        <!-- TODO Total Hack Job Here - Needs to be rethought and better solution
+            If zero results then there is no means to add any. That won't do. If the JS array for this type had no results then it is null. Check for null and display the attributes for adding an endorsement. We only need one of the three button weighBecause elements (as of 10.6.2019) so I hard code call the third element in the array of all to change the display to block. Why? cause it is easier for now. But needs a fix. I also display the input field. The whole thing is wrapped in a ph conditional so this only shows up when the appropriate accept/reject condition is chosen along with a logged in user. 
+
+            This "solution" breaks normal flow with how I want to interact with each window individually and if a user switch I want it to revert. I expect bugs with this. 
+         -->
+         <?php if(isset($_SESSION['profile']) and ($_SESSION['opinion'] > 0) and (count($therefore)==0)){ ?>
+          <script type="text/javascript"> 
+              var actionButtonClassArray = document.getElementsByClassName("button weighTherefore");
+              actionButtonClassArray[2].style.display = "block";
+              document.getElementById("thereforeAddAssertion").style.display = "block";
+          </script>
+        <?php } ?>
+        <!--End of Hack that I want to fix-->
+
+
       <div class="box_nofoot thereforeInvert"></div>
     </div>
     <div class="filter_cell">
