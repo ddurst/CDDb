@@ -90,6 +90,85 @@ button:focus { outline: none; }
 	width: 100%;
 }
 
+/*Overlay components for expanded phrasing options or explications*/
+#overlay {
+  position: fixed;
+  display: none; /*Default overlay is off */
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.75);
+  z-index: 2;
+  overflow: auto;
+}
+#overContain {
+  position: absolute;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  background: var(--cddbWhite);
+  display: none; /*Default overlay is off */
+  flex-direction: column;
+  top: 10px;
+  bottom: 10px;
+  right: 0;
+  left: 0;
+  width: 70%;
+  min-width: 700px;
+  height: auto;
+  z-index: 2;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  overflow: auto;
+  border: 0px;
+}
+#overPhrasing {
+  margin: 0;
+  background: var(--cddbWhite);
+  display: none; /*Default overlay is off */
+  flex-flow: column;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 4;
+  border-color: var(--cddbGrey);
+  border: 8px solid var(--cddbGrey);
+}
+#overQuibble {
+  margin: 0;
+  background: var(--cddbWhite);
+  display: none; /*Default overlay is off */
+  flex-flow: column;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 4;
+  border-color: var(--cddbGrey);
+  border: 8px solid var(--cddbGrey);
+}
+#overExplication {
+  margin: 0;
+  background: var(--cddbWhite);
+  display: none; /*Default overlay is off */
+  flex-flow: column;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 4;
+  border-color: var(--cddbGrey);
+  border: 8px solid var(--cddbGrey);
+}
+
 /* main components of each cell's box*/
 .box_header {
 	display: flex;
@@ -138,14 +217,23 @@ button:focus { outline: none; }
 .button{
       float: left;
       margin:0;
+      padding-left: 1em;
+      padding-right: 1em;
       height: 2rem;
-      font-size: 75%;
+      cursor: pointer; /* Pointer/hand icon */
+      font-size: 80%;
       font-weight: bold;
       text-align: center;
       vertical-align: center;
       border-width: .2rem;
       border-style: solid;
       border-radius: 2rem;
+}
+.shame {
+}
+.shame:hover {
+	color: white;
+	background: black;
 }
 .choiceHold {
 	width:20%; 
@@ -209,6 +297,176 @@ button:focus { outline: none; }
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;         
 }
+.phraseQuibble{
+	padding-left: .5rem;
+	padding-right: .5rem;
+	color: var(--cddbWhite);
+	background-color: var(--cddbGrey);
+	border-color: var(--cddbWhite);
+	border-right-width: .1rem;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	border-top-left-radius: .5rem;
+	border-bottom-left-radius: .5rem;    
+}
+.phraseQuibble:hover {
+	color: var(--cddbBlack);
+	background: var(--cddbWhite);
+}
+
+.phraseQuibble .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.phraseQuibble:hover .tooltiptext {
+  visibility: visible;
+}
+
+
+.phrasePrefer{
+	padding-left: .5rem;
+	padding-right: .5rem;
+	color: var(--cddbWhite);
+	background-color: var(--cddbBlack);
+	border-color: var(--cddbWhite);
+	border-left-width: .1rem;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;      
+} 
+.phrasePrefer:hover {
+	color: var(--cddbBlack);
+	background: var(--cddbWhite);
+}
+.argBox_grid {
+	width: 100%;
+	height: 100%;
+	display: grid;
+	grid-template-columns: 20% 75% 5%;
+	grid-template-rows: 33.34% 66.66%;
+}
+.stat_subCell {
+	grid-column-start: 1;
+	grid-column-end: 2;
+	grid-row-start: 1;
+	grid-row-end: 2;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+}
+.statBig{
+	display: inline;
+	font-size: 4rem;
+	font-weight: bold;
+	color: var(--cddbBlack);
+}
+.statSmall{
+	display: inline;
+	margin-left: -1rem;
+	font-size: 1.5rem;
+	font-weight: bold;
+	color: var(--cddbBlack);
+}
+.statDetail{
+	display: block;
+	font-size:1rem;
+	color: var(--cddbGrey);
+}
+.phrased_subCell {
+	grid-column-start: 2;
+	grid-column-end: 3;
+	grid-row-start: 1;
+	grid-row-end: 2;
+	display: flex;
+	font-size: 200%;
+	flex-direction: column;
+	justify-content: center;
+	height: 100%;
+	width: 100%;
+}
+.phraseAltBtn_subCell {
+	grid-column-start: 3;
+	grid-column-end: 4;
+	grid-row-start: 1;
+	grid-row-end: 2;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+}
+.phraseAltBtn {
+	display: block;
+	font-size: 2rem;
+	padding-left: .2rem;
+	padding-right: .2rem;
+	color: var(--cddbWhite);
+	background-color: var(--cddbBlack);
+	border-color: var(--cddbWhite);
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	height: 100%;
+	width: 100%;
+}
+.explication_subCell {
+	grid-column-start: 2;
+	grid-column-end: 3;
+	grid-row-start: 2;
+	grid-row-end: 3;
+	display: flex;
+	padding: 1rem;
+	flex-direction: column;
+	border: 2px solid black;
+	height: 100%;
+	width: 100%;
+}
+
+.explication_subCell a:link{
+	color: inherit;
+	text-decoration: underline;
+	font-size: 150%;
+}
+.explication_subCell a:hover{
+	background-color: var(--cddbBlack);
+	color: var(--cddbWhite);
+}  
+
+.explicationAltBtn_subCell {
+	grid-column-start: 3;
+	grid-column-end: 4;
+	grid-row-start: 2;
+	grid-row-end: 3;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+}
+.explicationAltBtn {
+	display: block;
+	font-size: 2rem;
+	padding-left: .2rem;
+	padding-right: .2rem;
+	color: var(--cddbWhite);
+	background-color: var(--cddbBlack);
+	border-color: var(--cddbWhite);
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	height: 100%;
+	width: 100%;
+}
+
+
+
 .weighBecause{
 	display: none;
 	font-weight: strong;
@@ -219,14 +477,17 @@ button:focus { outline: none; }
 	border-color: var(--cddbWhite);
 	border-radius: 0;
 }
-#becauseAddAssertion{
-	display: none;
-}
 .weighBecause:hover {
 	background-color: var(--cddbWhite);
 	color: var(--cddbBlue);
 }
+#becauseAddAssertion{
+	display: none;
+	height: 2rem;
+}
 .weighTherefore{
+	display: none;
+	font-weight: strong;
 	padding-left: .5rem;
 	padding-right: .5rem;
 	color: var(--cddbWhite);
@@ -238,9 +499,17 @@ button:focus { outline: none; }
 	background-color: var(--cddbWhite);
 	color: var(--cddbGreen);
 }
+#thereforeAddAssertion{
+	display: none;
+	height: 2rem;
+}
 .weighRebuttal{
+	display: none;
+	font-weight: strong;
 	padding-left: .5rem;
 	padding-right: .5rem;
+	margin-left: .5rem;
+	margin-right: .5rem;
 	color: var(--cddbWhite);
 	background-color: var(--cddbRed);
 	border-color: var(--cddbWhite);
@@ -250,22 +519,69 @@ button:focus { outline: none; }
 	background-color: var(--cddbWhite);
 	color: var(--cddbRed);
 }
+#rebuttalAddAssertion{
+	display: none;
+	height: 2rem;
+}
+#newPutForth{
+	display: none;
+	height: 2rem;
+}
+#newMotJuste{
+	display: none;
+	height: 2rem;
+}
 .lineItem{
 	padding: .1rem;
 	display: flex;
+	justify-content: space-between;
     align-items: center;
     border: 0;		
 }
-.assocArgContainer:hover{
+.lineItem2{ /*made this for alternating line colors*/
+	padding: .1rem;
+	display: flex;
+	color: var(--cddbWhite);
+	background-color: var(--cddbGrey);
+	justify-content: space-between;
+    align-items: center;
+    border: 0;		
+}
+.becauseArgContainer{
+	/*TODO flex-grow: 1;*/
+	width: 85%;
+    display: table;
+}
+.thereforeArgContainer{
+	/*TODO flex-grow: 1;*/
+	width: 85%;
+    display: table;
+}
+.rebuttalArgContainer{
+	/*TODO flex-grow: 1;*/
+	width: 85%;
+    display: table;
+}
+.becauseArgContainer:hover{
 	background-color: var(--cddbBlue);
 	/*padding-left: -2rem;*/
 	border-radius: 5px;
 	/*margin-left: -1rem; THIS DIDN"T WORK BECAUSE IT COVERS THE BUTTON MAKING IT UNRELIABLE the highlight emanates from the node it is connected to.*/
 	color: var(--cddbWhite);
 }
-.assocArgContainer{
-	flex-grow: 1;
-    display: table;
+.thereforeArgContainer:hover{
+	background-color: var(--cddbGreen);
+	/*padding-left: -2rem;*/
+	border-radius: 5px;
+	/*margin-left: -1rem; THIS DIDN"T WORK BECAUSE IT COVERS THE BUTTON MAKING IT UNRELIABLE the highlight emanates from the node it is connected to.*/
+	color: var(--cddbWhite);
+}
+.rebuttalArgContainer:hover{
+	background-color: var(--cddbRed);
+	/*padding-left: -2rem;*/
+	border-radius: 5px;
+	/*margin-left: -1rem; THIS DIDN"T WORK BECAUSE IT COVERS THE BUTTON MAKING IT UNRELIABLE the highlight emanates from the node it is connected to.*/
+	color: var(--cddbWhite);
 }
 .acceptRate{
 	display: block;
