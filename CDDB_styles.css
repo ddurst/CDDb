@@ -322,9 +322,6 @@ button:focus { outline: none; }
   text-align: center;
   padding: 5px 0;
   border-radius: 6px;
-
- 
-  /* Position the tooltip text - see examples below! */
   position: absolute;
   z-index: 1;
 }
@@ -530,6 +527,17 @@ button:focus { outline: none; }
 #newMotJuste{
 	display: none;
 	height: 2rem;
+}
+.lineItemLabel{
+	padding: .1rem;
+	font-size: .5em;
+	font-weight: strong;
+	display: flex;
+	color: var(--cddbWhite);
+	background-color: var(--cddbBlack);
+	justify-content: space-between;
+    align-items: center;
+    border: 0;		
 }
 .lineItem{
 	padding: .1rem;

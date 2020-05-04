@@ -1,18 +1,43 @@
 <?php 
-	session_start(); 
-    print_r($_SESSION); //Testing
-	require_once('connect.php');
+	if(session_status()!=PHP_SESSION_ACTIVE) session_start();
+    //print_r($_SESSION); //Testing
+	require_once('connect-local-google.php');
 	if(isset($_POST) && !empty($_POST)){
-		$email = mysqli_real_escape_string($conn, $_POST['email']);
+		$email = mysqli_real_escape_string($mysqli, $_POST['email']);
 		$_SESSION['email']=$email;
 		$password = hash('sha256',$_POST['password'],false);
+
+		$stmt = $mysqli->prepare("SELECT profileID FROM USER_PROFILE WHERE email = ? AND securityCode = ? ");	
+   		$stmt->bind_param("ss", $email, $password);
+		$stmt->execute();
+		$result = $stmt->get_result()->fetch_all(MYSQLI_NUM);
+
+		if ($result[1][0] == NULL) {
+			$_SESSION['profile'] = $result[0][0];
+			$currentArgID = intval($_GET["arg"]); 
+			header('location: CDDb_main.php?arg='.$currentArgID);
+		}
+		else {
+			$fmsg = "Invalid Email/Password";
+		}
+		if(isset($_SESSION['profile'])){
+			$smsg = "User already logged in. ";
+			$currentArgID = $_GET["arg"]; 
+			$logoutURL = "logout.php?arg=".$currentArgID; 
+
+		}	
+			$stmt->close();
+	}
+
+		/* Original method used to check login creds.
+
 		$sql = "SELECT * FROM USER_PROFILE WHERE email ='$email' AND securityCode ='$password'";
-		$result = mysqli_query($conn, $sql);
+		$result = mysqli_query($mysqli, $sql);
 		$row = mysqli_fetch_row($result);
 		if (mysqli_num_rows($result) == 1) {
 			$_SESSION['profile'] = $row[0];
 			$currentArgID = intval($_GET["arg"]); 
-			header('location: CDDb_working.php?arg='.$currentArgID);
+			header('location: CDDb_main.php?arg='.$currentArgID);
 		}
 		else {
 			$fmsg = "Invalide Email/Password";
@@ -25,7 +50,8 @@
 
 	}
 	mysqli_free_result($result);
-  	mysqli_close($conn);
+  	mysqli_close($mysqli);
+  	*/
 ?>
 
 <!DOCTYPE html>
