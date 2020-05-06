@@ -1,8 +1,8 @@
 <?php
   $config = parse_ini_file('../private/config.ini'); 
-  $key = "../client-key.pem";
-  $cert = "../client-cert.pem";
-  $ca = "../ca-cert.pem";
+  $key = "..ssl/keys/client-key.pem";
+  $cert = "..ssl/certs/client-cert.pem";
+  $ca = "..ssl/csrs/ca-cert.pem";
 
   mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
   try {
