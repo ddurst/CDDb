@@ -1,9 +1,17 @@
 <?php
   $config = parse_ini_file('../private/config.ini'); 
-  $mysqli = new mysqli($config['servername'], $config['username'], $config['password'], $config['dbname']);
-    if($mysqli->connect_error) {
-      exit('Error connecting to database'); //Should be a message a typical user could understand in production
-    }
-    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-    $mysqli->set_charset("utf8mb4");
+  $key = "../client-key.pem";
+  $cert = "../client-cert.pem";
+  $ca = "../ca-cert.pem";
+
+  mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+  try {
+      $mysqli = mysqli_connect($config['servername'], $config['username'], $config['password'], $config['dbname']);
+  } catch (mysqli_sql_exception $ex) {
+      throw new Exception("Can't connect to the database! \n" . $ex);
+  }
+
+  mysqli_ssl_set($mysqli, $key, $cert, $ca, NULL, NULL);
+  mysqli_set_charset($mysqli, "utf8mb4");
 ?>
+
