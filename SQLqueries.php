@@ -25,7 +25,7 @@
 						WHEN E1.endorseType = 'Therefore' THEN '2'
 						WHEN E1.endorseType = 'Rebuttal' THEN '3'
 						ELSE E1.endorseType END ASC, AggWeight DESC";
-			$result = $connection->query($sql);
+			$result = mysqli_query($mysqli, $sql);
             break;
 
         /*Gives current most popular among all users phrasing of assertion of argument + count of acceptors of argument + percent acceptors represent - only displays first row
@@ -41,7 +41,7 @@
 		      		(SELECT COUNT(acceptance) FROM OPINION WHERE argumentID = $param1)) AS percentAccept
 		    	FROM PHRASING
 		    	WHERE argumentID = $param1";
-			$result = $connection->query($sql);
+			$result = mysqli_query($mysqli, $sql);
             break;
         case 3:
         	$param1 = $_SESSION['currentArg'];
@@ -52,7 +52,7 @@
 			    GROUP BY hyperlink, publisher, authorFName, authorLName, title, metaPub, metaName, metaWildcard 
 			    ORDER BY explicationVote DESC
 			    LIMIT $limit";
-			$result = $connection->query($sql);
+			$result = mysqli_query($mysqli, $sql);
             break;
 
         /*Gives logged in user's opinion on the argument at hand if one exists. 
@@ -66,14 +66,14 @@
 		        FROM OPINION
 		        WHERE argumentID = $param1
 		        AND profileID = $param2";
-			$result = $connection->query($sql);
+			$result = mysqli_query($mysqli, $sql);
             break;
         case 5:
         	$param1 = $_SESSION['currentArg'];
 			$sql = "SELECT currentPhrasing, putForthID
 				FROM PUT_FORTH
 				WHERE argumentID = $param1";
-			$result = $connection->query($sql);
+			$result = mysqli_query($mysqli, $sql);
             break;	
     }	
  ?>
