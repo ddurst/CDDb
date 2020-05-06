@@ -1,16 +1,4 @@
-<!--
-	**FILE DESCRIPTION**
-    	html and php - Interstitial stand in for search functionality. Spits out a table of alternative arguments to use. We want to encourage users to pick existing arguments over creating their own. Having more potential options than those active is helpful - particularly early on before much surveying. 
-	**NEEDS**
-    	To be replaced by search functionality on the main page. Better methodology for finding indirectly related arguments and for setting priority.
-	**WRITTEN BY**
-    	Craig Danz - Seattle, WA - Copyright August 6, 2019
--->
-
-	<?php
-
-	//This exists because we don't have search. I wish I didn't need this but it helps with convergence until we have a better solution available
-	if(session_status()!=PHP_SESSION_ACTIVE) session_start();
+<?php session_start();
 	header("Content-Type: text/html; charset=ISO-8859-1"); //insure symbols in text are recognized.
 	$because = $_SESSION['currentBecause'];
 	$therefore = $_SESSION['currentTherefore'];

@@ -1,13 +1,3 @@
-<!--
-  **FILE DESCRIPTION**
-      html and php - retrieves dynamic data for a page's underlying argument. 
-  **NEEDS**
-      Security
-  **WRITTEN BY**
-      Craig Danz - Seattle, WA - Copyright October 11, 2018
--->
-
-
 <?php
   /* Displays the appropriately associated arguments for each of the 3 types. Shows their current weight and accepts the new weights. */
   switch ($endorseType) {
@@ -130,5 +120,4 @@
     break;
     break;  
   } 
-
 ?>

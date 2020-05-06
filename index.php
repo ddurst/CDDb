@@ -1,39 +1,11 @@
-<!-- 
-  **FILE DESCRIPTION**
-    The front page - html, php, and javascript. All dynamic content is called from this file and this is the file the web will reference. 
-  **NEEDS**
-    If CSS inline it is because I'm not sure how to better handle.
-  **WRITTEN BY**
-    Craig Danz - Seattle, WA - Copyright January 18, 2018
-
-  **SYSTEM DESCRIPTION**
-    A structure for expression measuring while shaping a map of "the dialogue". Reduces noise and contextualizes to enable productive collective decision making.      
-      ** Novel reference material to join dictionaries, encyclopedias and atlases
-      ** Manages competing priorities
-      ** Enable governing bodies
-      ** Public/Private knowledgebase
-      ** Next gen-polling
-      ** Content discovery
-    The Dialogue - defined here as the collective expression of online/media/community chatter as individually percieved AKA "The Discourse", "conventional wisdom", what "Society Tells You to Think" .
-    An organizing principle with an emphasis on context. 
--->
-
-
-
-<?php 
-  if(session_status()!=PHP_SESSION_ACTIVE) session_start();
+<?php session_start();
   $_SESSION['currentArg'] = intval($_GET["arg"]); 
   require_once('argument_at_hand.php');
   $baseURL = "http://localhost/CDDB_main.php";
   $_SESSION['currentBecause'] = $because; 
   $_SESSION['currentTherefore'] = $therefore; 
   $_SESSION['currentRebuttal'] = $rebuttal; 
-  //print_r($_SESSION);
 ?>
-
-
-
-
 <!DOCTYPE html>
 <html>
 <head>

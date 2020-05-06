@@ -1,5 +1,4 @@
-<?php
-	if(session_status()!=PHP_SESSION_ACTIVE) session_start();
+<?php session_start();
 	header("Content-Type: text/html; charset=ISO-8859-1"); //insure symbols in text are recognized.
 	if(isset($_POST["buttonClicked"])) {
 		switch ($_POST["buttonClicked"]) {

@@ -29,6 +29,7 @@
           }
           \n#displayBtn" . $row[1] . $row[2] . " {
           display: table-cell;
+          cursor: pointer;
           vertical-align: middle;
           background-color: var(--cddbBlue);
           color: var(--cddbBlue);
@@ -63,30 +64,100 @@
           background-color: var(--cddbWhite);
           color: var(--cddbBlue);
           }";
-        }
+      }
       else if ($row[1] == "Rebuttal") {
-        echo "\n#displayBtn" . $row[1] . $row[2] . " {
+        echo "\n#btnContainer" . $row[1] . $row[2] . " {
+          height: $diameter"."rem;
+          width: $diameter"."rem;
+          border: 0;
+          }
+          \n#displayBtn" . $row[1] . $row[2] . " {
+          display: table-cell;
+          cursor: pointer;
+          vertical-align: middle;
           background-color: var(--cddbRed);
-          border-color: var(--cddbRed); 
-          font-size: 1rem;
-          width: $diameter"."rem;
-          height: $diameter"."rem;           
+          color: var(--cddbRed);
+          font-size: $diameter"."rem;
+          font-weight: bold;
+          letter-spacing: -1px;
+          color: transparent;
+          border: 0;
+          border-radius: 50%;
+          height: 100%;
+          width: 100%;
+          }
+          \n#displayBtn" . $row[1] . $row[2] . ":hover {
+          background-color: var(--cddbWhite);
+          color: var(--cddbRed);
+          }
+          \n#displayBtn" . $row[1] . $row[2] . ".neutral {
+          display: table-cell;
+          vertical-align: middle;
+          background-color: var(--cddbGrey);
+          color: var(--cddbRed);
+          font-size: $diameter"."rem;
+          font-weight: bold;
+          letter-spacing: -1px;
+          color: transparent;
+          border: 0;
+          border-radius: 50%;
+          height: 100%;
+          width: 100%;
+          }
+          \n#displayBtn" . $row[1] . $row[2] . ".neutral:hover {
+          background-color: var(--cddbWhite);
+          color: var(--cddbRed);
           }";
-        }
+      }
       else if ($row[1] == "Therefore") {
-        echo "\n#displayBtn" . $row[1] . $row[2] . " {
-          background-color: var(--cddbGreen);
-          border-color: var(--cddbGreen); 
-          font-size: 1rem;
+        echo "\n#btnContainer" . $row[1] . $row[2] . " {
+          height: $diameter"."rem;
           width: $diameter"."rem;
-          height: $diameter"."rem;          
+          border: 0;
+          }
+          \n#displayBtn" . $row[1] . $row[2] . " {
+          display: table-cell;
+          cursor: pointer;
+          vertical-align: middle;
+          background-color: var(--cddbGreen);
+          color: var(--cddbGreen);
+          font-size: $diameter"."rem;
+          font-weight: bold;
+          letter-spacing: -1px;
+          color: transparent;
+          border: 0;
+          border-radius: 50%;
+          height: 100%;
+          width: 100%;
+          }
+          \n#displayBtn" . $row[1] . $row[2] . ":hover {
+          background-color: var(--cddbWhite);
+          color: var(--cddbGreen);
+          }
+          \n#displayBtn" . $row[1] . $row[2] . ".neutral {
+          display: table-cell;
+          vertical-align: middle;
+          background-color: var(--cddbGrey);
+          color: var(--cddbGreen);
+          font-size: $diameter"."rem;
+          font-weight: bold;
+          letter-spacing: -1px;
+          color: transparent;
+          border: 0;
+          border-radius: 50%;
+          height: 100%;
+          width: 100%;
+          }
+          \n#displayBtn" . $row[1] . $row[2] . ".neutral:hover {
+          background-color: var(--cddbWhite);
+          color: var(--cddbGreen);
           }";
-        }
+      }
       else {
         echo "ERROR - Illegal endorsement type encountered in query";
-        }
       }
     }
+  }
   else {
     echo "0 results";
   }
